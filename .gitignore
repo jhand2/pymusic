@@ -1,3 +1,4 @@
 .ropeproject
 pymusic/__pycache__
 *.pyc
+Makefile
