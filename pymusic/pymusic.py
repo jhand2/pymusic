@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 
 import curses
-import curses.wrapper
+from curses import wrapper
 
+# Local imports
 import crawl
 
 
 def main(scr):
+    """Does curses stuffs"""
 
     scr.addstr(0, 0, "PYMusic Music Player")
     songs = crawl.find_files("/home/jordan/Music")
@@ -19,4 +21,4 @@ def main(scr):
     scr.getch()
 
 
-curses.wrapper(main)
+wrapper(main)
