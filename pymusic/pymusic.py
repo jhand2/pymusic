@@ -11,45 +11,43 @@ class MusicUI(object):
 
     def __init__(self, screen):
         self.scr = screen
+        self.pad = None
+        self.pad_pos = None
 
-    def refresh(self, nrows, xmax):
-        self.scr.refresh()
-        self.pad.refresh(pad_pos, 0, 1, 0, nrows, xmax - 1)
+    def draw_ui(self, songs, refresh_only):
+        if not refresh_only:
+            self.scr.addstr(0, 0, "PYMusic Music Player")
 
-    def init_ui(self, songs, refresh_only):
+            self.pad = curses.newpad(100, 100)
+            index = 1
+            self.pad_pos = 1
 
-        self.scr.addstr(0, 0, "PYMusic Music Player")
-
-        self.pad = curses.newpad(100, 100)
-        index = 1
-        self.pad_pos = 1
-
-        for s in songs:
-            if index == pad_pos:
-                mode = curses.A_REVERSE
-            else:
-                mode = curses.A_NORMAL
-                pad.addstr(index, 2, s.name, mode)
+            for s in songs:
+                # if index == self.pad_pos:
+                    # mode = curses.A_REVERSE
+                # else:
+                    # mode = curses.A_NORMAL
                 index += 1
+                self.pad.addstr(index, 2, s.name)
+            curses.curs_set(1)
+            curses.curs_set(0)
+
         max_x = self.scr.getmaxyx()
-        curses.curs_set(1)
-        curses.curs_set(0)
-        refresh(len(songs), max_x, pad)
+        self.scr.refresh()
+        self.pad.refresh(self.pad_pos, 0, 1, 0, len(songs), max_x[1] - 1)
 
-    def add_pad()
-
-    def get_input(songs):
+    def get_input(self, songs):
         while True:
-            ch = scr.getch()
-            if ch == curses.KEY_DOWN:
-                if pad_pos < len(songs):
-                    pad_pos += 1
-            elif ch == curses.KEY_UP:
-                if pad_pos > 0:
-                    pad_pos -= 1
+            ch = self.scr.getch()
+            if ch == curses.KEY_DOWN or ch == ord('j'):
+                if self.pad_pos < len(songs):
+                    self.pad_pos += 1
+            elif ch == curses.KEY_UP or ch == ord('k'):
+                if self.pad_pos > 0:
+                    self.pad_pos -= 1
             elif ch == ord('q'):
                 break
-            refresh(len(songs))
+            self.draw_ui(songs, True)
 
 
 class App(object):
@@ -58,8 +56,8 @@ class App(object):
 
         songs = crawl.find_files("/home/jordan/Music")
         ui = MusicUI(screen)
-        draw_ui(songs)
-        get_input(songs)
+        ui.draw_ui(songs, False)
+        ui.get_input(songs)
 
 
 if __name__ == "__main__":
