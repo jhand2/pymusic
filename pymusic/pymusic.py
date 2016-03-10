@@ -13,13 +13,14 @@ class MusicUI(object):
         self.scr = screen
         self.pad = None
         self.pad_pos = None
+        self.curs_pos = None
 
     def draw_ui(self, songs, refresh_only):
         if not refresh_only:
             self.scr.addstr(0, 0, "PYMusic Music Player")
 
             self.pad = curses.newpad(100, 100)
-            index = 1
+            index = 0
             self.pad_pos = 1
 
             for s in songs:
@@ -30,11 +31,12 @@ class MusicUI(object):
                 index += 1
                 self.pad.addstr(index, 2, s.name)
             curses.curs_set(1)
-            curses.curs_set(0)
 
         max_x = self.scr.getmaxyx()
         self.scr.refresh()
         self.pad.refresh(self.pad_pos, 0, 1, 0, len(songs), max_x[1] - 1)
+        curses.setsyx(1, 1)
+        curses.doupdate()
 
     def get_input(self, songs):
         while True:
