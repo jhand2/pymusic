@@ -1,0 +1,4 @@
+j (or up arrow) - scroll up
+k (or down arrow) - scroll down
+enter - play song
+q - quit
