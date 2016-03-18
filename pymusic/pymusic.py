@@ -2,6 +2,7 @@
 
 import curses
 from curses import wrapper
+import threading
 
 # Local imports
 import loader
@@ -17,6 +18,8 @@ class MusicUI(object):
         self.curs_pos = None
         self.max_x = None
         self.max_y = None
+        self.song_thread = None
+        self.music = player.Player()
 
     def draw_ui(self, songs, refresh_only):
         """Draws the UI. Basically called every time any interaction happens
@@ -52,7 +55,8 @@ class MusicUI(object):
         while True:
             ch = self.scr.getch()
             if ch == curses.KEY_DOWN or ch == ord('j'):
-                if self.curs_pos < self.max_y - 1 and self.curs_pos < len(songs):
+                if (self.curs_pos < self.max_y - 1 and
+                        self.curs_pos < len(songs)):
                     self.curs_pos += 1
                     # self.pad_pos += 1
             elif ch == curses.KEY_UP or ch == ord('k'):
@@ -61,10 +65,24 @@ class MusicUI(object):
                     # self.pad_pos -= 1
             elif ch == curses.KEY_ENTER or ch == 10 or ch == 13:
                 song_index = self.curs_pos - self.pad_pos
-                player.play(songs[song_index])
+                if not self.play_song(songs[song_index]):
+                    break
             elif ch == ord('q'):
+                # if self.song_thread is not None:
+                self.music.stop()
+
                 break
             self.draw_ui(songs, True)
+
+    def play_song(self, s):
+        try:
+            self.music.stop()
+            self.song_thread = threading.Thread(target=self.music.play,
+                                                args=(s, ))
+            self.song_thread.start()
+            return True
+        except:
+            return False
 
 
 class App(object):

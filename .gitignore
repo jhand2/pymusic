@@ -2,3 +2,4 @@
 pymusic/__pycache__
 *.pyc
 Makefile
+*.swp
