@@ -42,8 +42,8 @@ class MusicUI(object):
                 index += 1
                 self.pad.addstr(index, 2, s.name)
             curses.curs_set(1)
+            self.scr.refresh()
 
-        self.scr.refresh()
         self.pad.refresh(self.pad_pos, 0, 1, 0, self.max_y, self.max_x - 1)
         curses.setsyx(self.curs_pos, 2)
         curses.doupdate()
