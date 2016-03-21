@@ -10,8 +10,14 @@ import player
 
 
 class MusicUI(object):
+    """
+    A music player UI object. Handles all UI input and display.
+    """
 
     def __init__(self, screen):
+        """
+        Initializes member variables for MusicUI
+        """
         self.scr = screen
         self.pad = None
         self.pad_pos = None
@@ -75,6 +81,12 @@ class MusicUI(object):
             self.draw_ui(songs, True)
 
     def play_song(self, s):
+        """
+        Plays song s in the background
+
+        args:
+            s -- song to be played
+        """
         try:
             self.music.stop()
             self.song_thread = threading.Thread(target=self.music.play,
@@ -92,6 +104,8 @@ class App(object):
         """
         self.screen = screen
 
+        """Crawls current user's Music Directory and loads all playable
+        music files"""
         songs = loader.find_files("/home/jordan/Music")
         ui = MusicUI(screen)
         ui.draw_ui(songs, False)
