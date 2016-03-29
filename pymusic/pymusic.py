@@ -28,7 +28,8 @@ class MusicUI(object):
         self.music = player.Player()
 
     def draw_ui(self, songs, refresh_only):
-        """Draws the UI. Basically called every time any interaction happens
+        """
+        Draws the UI. Basically called every time any interaction happens
 
         args:
             songs -- list of currently playable song objects
